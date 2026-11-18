@@ -72,11 +72,12 @@ def info_rows():
         kv("Languages.Real", "English, Arabic"),
         blank(),
         header("- AI Stack"),
-        kv("Deep Learning", "PyTorch, torchvision"),
-        kv("Classical ML", "scikit-learn, Pandas, NumPy"),
-        kv("LLMs", "RAG, distributed inference"),
-        kv("Vision", "CNNs, transfer learning"),
-        kv("Shipping", "Next.js, React, Node, Express"),
+        kv("Deep Learning", "PyTorch, TensorFlow, Hugging Face"),
+        kv("Classical ML", "scikit-learn, XGBoost, Pandas, NumPy"),
+        kv("LLMs", "LangChain, RAG, OpenAI API, Ollama"),
+        kv("NLP", "NLTK, spaCy, Transformers"),
+        kv("Vision", "OpenCV, CNNs, transfer learning"),
+        kv("Shipping", "FastAPI, Docker, Streamlit, Next.js"),
         blank(),
         header("- Contact"),
         kv("Email", "asersherif2004" + "@" + "gmail.com"),
@@ -95,16 +96,17 @@ def info_rows():
 
 # ---------------------------------------------------------------- visuals
 THEMES = {
-    "dark": {"bg": "#0b130d", "art": "#e6edf3", "key": "#39ff7a", "val": "#b6ffc8", "dim": "#2a6b3a", "title": "#7dffa0",
-             "add": "#3fb950", "del": "#ff5f56", "redact": "#1f4d2b", "classified": "#ff5f56",
-             "rain": "#2ea043", "rainhead": "#d2ffe0", "rainop": .42,
-             "edge": "#3fb950", "edgeop": .28, "pulse": "#39ff7a", "node": "#3fb950", "nodefill": "#0b130d",
-             "bar": "#39ff7a", "barbg": "#163a20", "panel": .80},
-    "light": {"bg": "#f3fbf5", "art": "#1f2328", "key": "#1a7f37", "val": "#0b3d1a", "dim": "#9fd3ad", "title": "#116329",
-              "add": "#1a7f37", "del": "#cf222e", "redact": "#9fd3ad", "classified": "#cf222e",
-              "rain": "#2da44e", "rainhead": "#116329", "rainop": .25,
-              "edge": "#1a7f37", "edgeop": .30, "pulse": "#2da44e", "node": "#1a7f37", "nodefill": "#f3fbf5",
-              "bar": "#1a7f37", "barbg": "#cdebd5", "panel": .82},
+    # dark matches github.com dark mode (#0d1117); light matches the white site
+    "dark": {"bg": "#0d1117", "art": "#e6edf3", "key": "#79c0ff", "val": "#e6edf3", "dim": "#2f4a6b", "title": "#a5d6ff",
+             "add": "#a5d6ff", "del": "#ff7b72", "redact": "#2f4a6b", "classified": "#ff7b72",
+             "rain": "#388bfd", "rainhead": "#e6edf3", "rainop": .40,
+             "edge": "#58a6ff", "edgeop": .30, "pulse": "#cae8ff", "node": "#58a6ff", "nodefill": "#0d1117",
+             "bar": "#79c0ff", "barbg": "#162a45", "panel": .82},
+    "light": {"bg": "#ffffff", "art": "#1f2328", "key": "#0969da", "val": "#1f2328", "dim": "#a8c7ea", "title": "#0550ae",
+              "add": "#0969da", "del": "#cf222e", "redact": "#a8c7ea", "classified": "#cf222e",
+              "rain": "#54aeff", "rainhead": "#0550ae", "rainop": .30,
+              "edge": "#0969da", "edgeop": .28, "pulse": "#218bff", "node": "#0969da", "nodefill": "#ffffff",
+              "bar": "#218bff", "barbg": "#ddf4ff", "panel": .85},
 }
 
 RAIN_CHARS = "01θλσΣ∂∇πμ∑αβ0123456789.·"
