@@ -98,12 +98,12 @@ def info_rows():
 THEMES = {
     # dark matches github.com dark mode (#0d1117); light matches the white site
     "dark": {"bg": "#0d1117", "art": "#e6edf3", "key": "#79c0ff", "val": "#e6edf3", "dim": "#2f4a6b", "title": "#a5d6ff",
-             "add": "#a5d6ff", "del": "#ff7b72", "redact": "#2f4a6b", "classified": "#ff7b72",
+             "add": "#56d364", "del": "#ff7b72", "redact": "#2f4a6b", "classified": "#ff7b72",
              "rain": "#388bfd", "rainhead": "#e6edf3", "rainop": .40,
              "edge": "#58a6ff", "edgeop": .30, "pulse": "#cae8ff", "node": "#58a6ff", "nodefill": "#0d1117",
              "bar": "#79c0ff", "barbg": "#162a45", "panel": .82},
     "light": {"bg": "#ffffff", "art": "#1f2328", "key": "#0969da", "val": "#1f2328", "dim": "#a8c7ea", "title": "#0550ae",
-              "add": "#0969da", "del": "#cf222e", "redact": "#a8c7ea", "classified": "#cf222e",
+              "add": "#1a7f37", "del": "#cf222e", "redact": "#a8c7ea", "classified": "#cf222e",
               "rain": "#54aeff", "rainhead": "#0550ae", "rainop": .30,
               "edge": "#0969da", "edgeop": .28, "pulse": "#218bff", "node": "#0969da", "nodefill": "#ffffff",
               "bar": "#218bff", "barbg": "#ddf4ff", "panel": .85},
@@ -131,7 +131,7 @@ def rain(width, height, lh, t, seed=4):
         dur = rnd.uniform(7, 14)
         delay = -rnd.uniform(0, dur)
         col = "".join(f'<tspan x="{x}" y="{i*lh}"' + (f' fill="{t["rainhead"]}"' if i == n - 1 else "") +
-                      f'>{escape(rnd.choice(RAIN_CHARS))}</tspan>' for i in range(n))
+                      f'>{escape(rnd.choice("aser") if i == n - 1 else rnd.choice(RAIN_CHARS))}</tspan>' for i in range(n))
         out.append(f'<g style="animation:rn{height + n*lh} {dur:.1f}s linear {delay:.1f}s infinite">'
                    f'<text fill="{t["rain"]}" transform="translate(0,{-n*lh})">{col}</text></g>')
         x += rnd.choice([21, 29, 38, 46])
@@ -139,11 +139,21 @@ def rain(width, height, lh, t, seed=4):
     return out
 
 
+def wrap2(text):
+    """Split a title into two balanced lines at a space."""
+    words = text.split()
+    if len(words) < 2:
+        return [text]
+    best = min(range(1, len(words)),
+               key=lambda i: abs(len(" ".join(words[:i])) - len(" ".join(words[i:]))))
+    return [" ".join(words[:best]), " ".join(words[best:])]
+
+
 def network(x0, y0, w, h, t, T, seed=9):
     rnd = random.Random(seed)
     n_layers = len(LAYERS)
     xs = [x0 + 70 + i * (w - 140) / (n_layers - 1) for i in range(n_layers)]
-    top, bot = y0 + 18, y0 + h - 44
+    top, bot = y0 + 14, y0 + h - 56
     nodes = [[(xs[li], top + (bot - top) * (j + .5) / n) for j in range(n)] for li, (n, _, _) in enumerate(LAYERS)]
     period = 3.2
     out = [f'<g stroke="{t["edge"]}" stroke-width="1" opacity="{t["edgeop"]}">']
@@ -167,7 +177,11 @@ def network(x0, y0, w, h, t, T, seed=9):
             out.append(f'<circle class="n-{T}" style="animation-delay:{d:.2f}s" cx="{x:.0f}" cy="{y:.0f}" r="5"/>')
     out.append('</g>')
     for li, (_, name, joke) in enumerate(LAYERS):
-        out.append(f'<text class="{T}-val" x="{xs[li]:.0f}" y="{y0 + h - 12}" text-anchor="middle" font-size="12px">{escape(joke)}</text>')
+        lines = wrap2(joke)
+        y_first = y0 + h - 12 - 15 * (len(lines) - 1)
+        out.append(f'<text class="{T}-val" text-anchor="middle" font-size="12px">' +
+                   "".join(f'<tspan x="{xs[li]:.0f}" y="{y_first + 15*k}">{escape(s)}</tspan>' for k, s in enumerate(lines)) +
+                   '</text>')
     return out
 
 
